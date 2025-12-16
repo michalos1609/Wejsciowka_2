@@ -1,0 +1,109 @@
+---
+title: "Case Study: Analiza danych o samochodach"
+author: "Imię Nazwisko studenta"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+## Zadania do wykonania
+
+### 1. Wczytanie i podstawowa eksploracja danych
+
+```{r load_data}
+# Wczytaj dane mtcars (są już dostępne w bazowym R)
+
+
+
+library(mtcars)
+data(mtcars)
+
+
+# Wyświetl pierwsze 6 wierszy
+
+ p6 <- head(mtcars, 6)
+ p6
+
+
+# Sprawdź strukturę danych
+
+ str(mtcars)
+
+# Ile jest wierszy w zbiorze danych?
+ 
+ nrow(mtcars)
+
+
+# Podsumowanie statystyczne
+ 
+ summary(mtcars)
+
+```
+
+
+### 2. Analiza z pakietem dplyr
+
+```{r dplyr_analysis}
+library(dplyr)
+
+# Policz ile samochodów ma daną liczbę cylindrów
+
+table(mtcars$cyl)
+
+
+# Stwórz podzbiór danych - tylko samochody z silnikiem V8 (8 cylindrów)
+
+table(mtcars$cyl ==8)
+
+# Ile jest samochodów z silnikiem V8?
+
+v8 <-subset(mtcars,mtcars$cyl ==8)
+v8
+
+# Filtrowanie  aut hp> 200 i sortowanie malejąco wg mpg
+
+bb <- mtcars %>% 
+  filter(mtcars$hp>200) %>% 
+  arrange(desc(mpg))
+  
+
+# Jaka jest średnia moc samochodu dla każdej liczby cylindrów?
+
+mtcars %>% 
+  group_by(cyl) %>% 
+  summarise(srednia_moc = mean(hp))
+
+
+# Które samochody mają najlepsze i najgorsze zużycie paliwa?
+
+mtcars[which.max(mtcars$mpg)]
+
+mtcars[which.min(mtcars$mpg)]
+
+```
+
+### 3. Wizualizacja danych
+
+```{r visualization}
+library(ggplot2)
+
+# Wykres zużycia paliwa w zależności od liczby cylindrów (boxplot)
+
+ggplot(mtcars, aes(x = factor(cyl), y = mpg)) +
+  geom_boxplot(fill="blue")+
+  labs(
+    title = "Wykres",
+    x = "Liczba cylin",
+    y= "Zuzycie paliwa"
+  )
+
+# Scatter plot: moc vs zużycie paliwa
+
+```
+
+
+
+
